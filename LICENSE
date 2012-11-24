@@ -1,18 +1,4 @@
-cataract
-========
-
-This is an attempt to build a platform similar to Node.js for the JVM using the
-Scala programming language. This project is in a pre-alpha state, so you might
-be interested in using alternatives.
-
-There already is an equivalent project, called [Vert.x](http://vertx.io).
-
-License
--------
-
-(The MIT License)
-
-Copyright © 2012 Paul Vorbach
+Copyright © 2011-2012 Paul Vorbach
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the “Software”), to deal in
