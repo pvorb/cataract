@@ -7,6 +7,14 @@ be interested in using alternatives.
 
 There already is an equivalent project, called [Vert.x](http://vertx.io).
 
+Mailing Lists
+-------------
+
+  * [User list](https://groups.google.com/group/cataract-user) -- for questions
+    about the usage of the framework
+  * [Developer list](https://groups.google.com/group/cataract-dev) -- for
+    discussion on the future development of the framework
+
 Example
 -------
 
