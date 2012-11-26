@@ -1,64 +1,69 @@
 package cataract.web
 
-case object StatusCodes {
-  abstract case class StatusCode(code: Int, name: String) {
-    override def toString = code + " " + name
+object StatusCodes {
+  object StatusCode {
+    def apply(code: Int, name: String): String = code + " " + name
+    def unapply(arg: String): Option[(Int, String)] =
+      """^(\d\d\d) ([^\r\n]+)""".r.unapplySeq(arg) match {
+        case Some(List(code, name)) =>
+          try {
+            Some((code.toInt, name))
+          } catch {
+            case _: NumberFormatException => None
+          }
+        case _ => None
+      }
   }
 
   // Informational 1XX
-  case object Continue extends StatusCode(100, "Continue")
-  case object SwitchingProtocols extends StatusCode(101, "Switching Protocols")
+  lazy val Continue = StatusCode(100, "Continue")
+  lazy val SwitchingProtocols = StatusCode(101, "Switching Protocols")
 
   // Successful 2XX
-  case object OK extends StatusCode(200, "OK")
-  case object Created extends StatusCode(201, "Created")
-  case object Accepted extends StatusCode(202, "Accepted")
-  case object NonAuthoritiveInformation
-    extends StatusCode(203, "Non-Authoritive Information")
-  case object NoContent extends StatusCode(204, "No Content")
-  case object ResetContent extends StatusCode(205, "Reset Content")
-  case object PartialContent extends StatusCode(206, "Partial Content")
+  lazy val OK = StatusCode(200, "OK")
+  lazy val Created = StatusCode(201, "Created")
+  lazy val Accepted = StatusCode(202, "Accepted")
+  lazy val NonAuthoritiveInformation = StatusCode(203, "Non-Authoritive Information")
+  lazy val NoContent = StatusCode(204, "No Content")
+  lazy val ResetContent = StatusCode(205, "Reset Content")
+  lazy val PartialContent = StatusCode(206, "Partial Content")
 
   // Redirection 3XX
-  case object MultipleChoices extends StatusCode(300, "Multiple Choices")
-  case object MovedPermanently extends StatusCode(301, "Moved Permanently")
-  case object Found extends StatusCode(302, "Found")
-  case object SeeOther extends StatusCode(303, "See Other")
-  case object NotModified extends StatusCode(304, "Not Modified")
-  case object UseProxy extends StatusCode(305, "Use Proxy")
-  case object TemporaryRedirect extends StatusCode(307, "Temporary Redirect")
+  lazy val MultipleChoices = StatusCode(300, "Multiple Choices")
+  lazy val MovedPermanently = StatusCode(301, "Moved Permanently")
+  lazy val Found = StatusCode(302, "Found")
+  lazy val SeeOther = StatusCode(303, "See Other")
+  lazy val NotModified = StatusCode(304, "Not Modified")
+  lazy val UseProxy = StatusCode(305, "Use Proxy")
+  lazy val TemporaryRedirect = StatusCode(307, "Temporary Redirect")
 
   // Client Error 4XX
-  case object BadRequest extends StatusCode(400, "Bad Request")
-  case object Unauthorized extends StatusCode(401, "Unauthorized")
-  case object PaymentRequired extends StatusCode(402, "Payment Required")
-  case object Forbidden extends StatusCode(403, "Forbidden")
-  case object NotFound extends StatusCode(404, "Not found")
-  case object MethodNotAllowed extends StatusCode(405, "Method Not Allowed")
-  case object NotAcceptable extends StatusCode(406, "Not Acceptable")
-  case object ProxyAuthenticationRequired
-    extends StatusCode(407, "Proxy Authentication Required")
-  case object RequestTimeout extends StatusCode(407, "Request Timeout")
-  case object Conflict extends StatusCode(409, "Conflict")
-  case object Gone extends StatusCode(410, "Gone")
-  case object LengthRequired extends StatusCode(411, "Length Required")
-  case object PreconditionFailed extends StatusCode(412, "PreconditionFailed")
-  case object RequestEntityTooLarge
-    extends StatusCode(413, "RequestEntityTooLarge")
-  case object RequestURITooLong extends StatusCode(414, "Request-URI Too Long")
-  case object UnsupportedMediaType
-    extends StatusCode(415, "Unsupported Media Type")
-  case object RequestRangeNotSatisfiable
-    extends StatusCode(416, "Request Range Not Satisfiable")
-  case object ExpectationFailed extends StatusCode(417, "ExpectationFailed")
+  lazy val BadRequest = StatusCode(400, "Bad Request")
+  lazy val Unauthorized = StatusCode(401, "Unauthorized")
+  lazy val PaymentRequired = StatusCode(402, "Payment Required")
+  lazy val Forbidden = StatusCode(403, "Forbidden")
+  lazy val NotFound = StatusCode(404, "Not found")
+  lazy val MethodNotAllowed = StatusCode(405, "Method Not Allowed")
+  lazy val NotAcceptable = StatusCode(406, "Not Acceptable")
+  lazy val ProxyAuthenticationRequired =
+    StatusCode(407, "Proxy Authentication Required")
+  lazy val RequestTimeout = StatusCode(407, "Request Timeout")
+  lazy val Conflict = StatusCode(409, "Conflict")
+  lazy val Gone = StatusCode(410, "Gone")
+  lazy val LengthRequired = StatusCode(411, "Length Required")
+  lazy val PreconditionFailed = StatusCode(412, "PreconditionFailed")
+  lazy val RequestEntityTooLarge = StatusCode(413, "RequestEntityTooLarge")
+  lazy val RequestURITooLong = StatusCode(414, "Request-URI Too Long")
+  lazy val UnsupportedMediaType = StatusCode(415, "Unsupported Media Type")
+  lazy val RequestRangeNotSatisfiable =
+    StatusCode(416, "Request Range Not Satisfiable")
+  lazy val ExpectationFailed = StatusCode(417, "ExpectationFailed")
 
   // Server Error 5XX
-  case object InternalServerError
-    extends StatusCode(500, "Internal Server Error")
-  case object NotImplemented extends StatusCode(501, "Not Implemented")
-  case object BadGateway extends StatusCode(502, "Bat Gateway")
-  case object ServiceUnavailable extends StatusCode(503, "Service Unavailable")
-  case object GatewayTimeout extends StatusCode(504, "Gateway Timeout")
-  case object HTTPVersionNotSupported
-    extends StatusCode(505, "HTTP Version Not Supported")
+  lazy val InternalServerError = StatusCode(500, "Internal Server Error")
+  lazy val NotImplemented = StatusCode(501, "Not Implemented")
+  lazy val BadGateway = StatusCode(502, "Bat Gateway")
+  lazy val ServiceUnavailable = StatusCode(503, "Service Unavailable")
+  lazy val GatewayTimeout = StatusCode(504, "Gateway Timeout")
+  lazy val HTTPVersionNotSupported = StatusCode(505, "HTTP Version Not Supported")
 }
