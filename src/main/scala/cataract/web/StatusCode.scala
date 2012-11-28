@@ -1,20 +1,18 @@
 package cataract.web
 
-object StatusCodes {
-  object StatusCode {
-    def apply(code: Int, name: String): String = code + " " + name
-    def unapply(arg: String): Option[(Int, String)] =
-      """^(\d\d\d) ([^\r\n]+)""".r.unapplySeq(arg) match {
-        case Some(List(code, name)) =>
-          try {
-            Some((code.toInt, name))
-          } catch {
-            case _: NumberFormatException => None
-          }
-        case _ => None
-      }
-  }
-
+object StatusCode {
+  def apply(code: Int, name: String): String = code + " " + name
+  def unapply(arg: String): Option[(Int, String)] =
+    """^(\d\d\d) ([^\r\n]+)""".r.unapplySeq(arg) match {
+      case Some(List(code, name)) =>
+        try {
+          Some((code.toInt, name))
+        } catch {
+          case _: NumberFormatException => None
+        }
+      case _ => None
+    }
+  
   // Informational 1XX
   lazy val Continue = StatusCode(100, "Continue")
   lazy val SwitchingProtocols = StatusCode(101, "Switching Protocols")

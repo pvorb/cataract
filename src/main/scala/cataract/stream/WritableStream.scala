@@ -1,10 +1,9 @@
 package cataract.stream
 
-import cataract.events.Event
-import cataract.events.EventEmitter
+import cataract.event._
 import java.nio.ByteBuffer
 
-case class Pipe(source: ReadableStream) extends Event
+case class Pipe(source: InputStream) extends Event
 
 trait WritableStream extends EventEmitter {
   def write(buffer: ByteBuffer): Unit
