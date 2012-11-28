@@ -15,11 +15,6 @@ import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.file.Paths
 
-/**
- *
- *
- * @author Paul Vorbach
- */
 object FileInputStreamExample extends App {
 
   val utf8Decoder = Charset.forName("UTF-8").newDecoder()
