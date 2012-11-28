@@ -15,8 +15,6 @@ import cataract.event.{ Data, Error, Listener, Open }
 import java.lang.Integer
 import java.nio.ByteBuffer
 
-import cataract.stream.ByteInputStream;
-import cataract.stream.InputStream;
 import java.nio.channels.{ AsynchronousByteChannel, CompletionHandler }
 
 class ByteInputStream protected (
