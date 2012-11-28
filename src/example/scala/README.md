@@ -1,10 +1,12 @@
 cataract examples
 =================
 
-## `cataract.fs`
+`cataract.fs`
+-------------
 
-  * [FileInputStream](FileInputStreamExample.scala)
+  * [`FileInputStream`](FileInputStreamExample.scala)
 
-## `cataract.web`
+`cataract.web`
+--------------
 
-  * [http.Server](HttpServerExample.scala)
+  * [`http.Server`](HttpServerExample.scala)

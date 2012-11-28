@@ -18,25 +18,27 @@ Mailing Lists
 Example
 -------
 
+Here's an example that shows you how to read from a file with cataract. You can
+find more examples in
+[src/example/scala](//github.com/pvorb/cataract/tree/master/src/example/scala).
+
 ~~~ scala
-package cataract.stream
+import cataract.event.Data
+import cataract.fs.FileInputStream
 
-import cataract.fs.FileSystem
-import java.nio.file.Paths
+import java.nio.ByteBuffer
 import java.nio.charset.Charset
+import java.nio.file.Paths
 
-object ReadStreamExample extends App {
+object FileInputStreamExample extends App {
 
   val utf8Decoder = Charset.forName("UTF-8").newDecoder()
 
-  val rs = FileSystem.createReadStream(Paths.get("src/test/resources",
-    "test.txt")) {
-
-    case Data(buf) => {
+  FileInputStream.create(Paths.get("src/test/resources", "test.txt")) {
+    case Data(buf: ByteBuffer) => {
       utf8Decoder.reset()
       print(utf8Decoder.decode(buf))
     }
-
     case _ => System.exit(0)
   }
 
