@@ -4,9 +4,9 @@ cataract examples
 `cataract.fs`
 -------------
 
-  * [`FileInputStream`](FileInputStreamExample.scala)
+  * [`FileInputStream`](/pvorb/cataract/blob/master/src/example/scala/FileInputStreamExample.scala)
 
 `cataract.web`
 --------------
 
-  * [`http.Server`](HttpServerExample.scala)
+  * [`http.Server`](/pvorb/cataract/blob/master/src/example/scala/HttpServerExample.scala)
