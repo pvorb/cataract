@@ -1,3 +1,13 @@
+/*                  __                              __ 
+**   _____ ____ _ _/ /_ ____ _ _ ___ ____ _ _____ _/ /_
+**  / ___// __ `//  __// __ `// ___// __ `//  __//  __/
+** / /__ / /_/ / / /_ / /_/ // /   / /_/ // /__  / /_
+** \___/ \__,_/  \__/ \__,_//_/    \__,_/ \___/  \__/
+**
+**                                 Cataract Evented I/O
+**                               (c) 2012, Paul Vorbach
+*/
+
 package cataract.web
 
 import cataract.stream.{ ByteInputStream, WritableStream }
@@ -13,9 +23,10 @@ import java.net.URI
 import scala.collection.mutable
 import java.text.ParseException
 
-class ServerRequest private (ch: AsynchronousSocketChannel,
-                             bufferSize: Int)(ls: Listener*)
-    extends ByteInputStream(ch, bufferSize)(ls: _*) {
+class ServerRequest private (
+    ch: AsynchronousSocketChannel,
+    bufferSize: Int,
+    ls: Seq[Listener]) extends ByteInputStream(ch, bufferSize, ls) {
 
   def method = head._1
   def uri = head._2
@@ -100,6 +111,6 @@ class ServerRequest private (ch: AsynchronousSocketChannel,
 
 object ServerRequest {
   private[cataract] def build(channel: AsynchronousSocketChannel,
-                              bufSize: Int)(ls: Listener*) =
-    new ServerRequest(channel, bufSize)(ls: _*)
+                              bufSize: Int = 8192)(ls: Listener*) =
+    new ServerRequest(channel, bufSize, ls)
 }

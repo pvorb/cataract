@@ -1,15 +1,28 @@
+/*                  __                              __ 
+**   _____ ____ _ _/ /_ ____ _ _ ___ ____ _ _____ _/ /_
+**  / ___// __ `//  __// __ `// ___// __ `//  __//  __/
+** / /__ / /_/ / / /_ / /_/ // /   / /_/ // /__  / /_
+** \___/ \__,_/  \__/ \__,_//_/    \__,_/ \___/  \__/
+**
+**                                 Cataract Evented I/O
+**                               (c) 2012, Paul Vorbach
+*/
+
 package cataract.stream
 
-import cataract.event._
+import cataract.event.{ Data, Error, Listener, Open }
+
 import java.lang.Integer
 import java.nio.ByteBuffer
+
+import cataract.stream.ByteInputStream;
+import cataract.stream.InputStream;
 import java.nio.channels.{ AsynchronousByteChannel, CompletionHandler }
 
-class ByteInputStream(
-  protected val byteChannel: AsynchronousByteChannel,
-  protected val bufferSize: Int)(ls: Listener*)
-
-    extends InputStream(byteChannel)(ls: _*) {
+class ByteInputStream protected (
+    protected val byteChannel: AsynchronousByteChannel,
+    protected val bufferSize: Int,
+    ls: Seq[Listener]) extends InputStream(byteChannel, ls) {
 
   override def open(): Unit = {
     emit(Open[ByteInputStream](this))
@@ -34,4 +47,10 @@ class ByteInputStream(
       }
     })
   }
+}
+
+object ByteInputStream {
+  def create(byteChannel: AsynchronousByteChannel,
+             bufSize: Int = 8192)(ls: Listener*) =
+    new ByteInputStream(byteChannel, bufSize, ls)
 }
