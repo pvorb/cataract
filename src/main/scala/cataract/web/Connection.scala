@@ -8,11 +8,9 @@
 **                               (c) 2012, Paul Vorbach
 */
 
-package cataract.event;
+package cataract.web
 
-/**
- * @author Paul Vorbach
- */
-public @interface emits {
-	public Class<?> value();
-}
+import cataract.event.{ Event, Listener }
+
+case class Connection(request: (Listener*) => ServerRequest,
+                     response: ServerResponse) extends Event

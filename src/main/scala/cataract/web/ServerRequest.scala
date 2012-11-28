@@ -32,7 +32,7 @@ class ServerRequest private (
   def uri = head._2
   def httpVersion = head._3
   def headers = head._4
-  
+
   override def open() {
     head
   }

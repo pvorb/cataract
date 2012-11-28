@@ -10,14 +10,14 @@
 
 package cataract.web.http
 
-import cataract.event.{ Callback, Error, Event, EventEmitter, Listener, Open }
-import cataract.web.{ ServerRequest, ServerResponse }
+import cataract.event._
+import cataract.web.{ Connection, ServerRequest, ServerResponse }
 import java.net.InetSocketAddress
 import java.nio.channels.{ AsynchronousServerSocketChannel, AsynchronousSocketChannel, CompletionHandler }
-import cataract.event.emits
 
-@emits(classOf[Open[Server]])
-@emits(classOf[Error])
+@emits("cataract.event.Open")
+@emits("cataract.event.Close")
+@emits("cataract.web.Connection")
 class Server protected (
     addresses: Seq[InetSocketAddress],
     bufSize: Int,
@@ -29,7 +29,7 @@ class Server protected (
     emit(new Open(address))
     ch.accept(null, new CompletionHandler[AsynchronousSocketChannel, Void] {
       override def completed(ch: AsynchronousSocketChannel, v: Void) {
-        emit(new Server.Request(ServerRequest.build(ch, bufSize),
+        emit(new Connection(ServerRequest.build(ch, bufSize),
           new ServerResponse(ch)))
       }
 
@@ -43,7 +43,4 @@ class Server protected (
 object Server {
   def create(addresses: InetSocketAddress*)(bufSize: Int = 8192)(ls: Listener*) =
     new Server(addresses, bufSize, ls)
-
-  case class Request(request: (Listener*) => ServerRequest,
-                     response: ServerResponse) extends Event
 }
