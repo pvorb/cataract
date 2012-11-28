@@ -1,6 +1,6 @@
 /*                  __                              __ 
-**   _____ ____ _ _/ /_ ____ _ _ ___ ____ _ _____ _/ /_
-**  / ___// __ `//  __// __ `// ___// __ `//  __//  __/
+**   _____ ___ __ _/ /_ ___ __ _ ___ ___ __ _____ _/ /_
+**  / ___// __` //  __// __` // ___// __` //  __//  __/
 ** / /__ / /_/ / / /_ / /_/ // /   / /_/ // /__  / /_
 ** \___/ \__,_/  \__/ \__,_//_/    \__,_/ \___/  \__/
 **
@@ -23,7 +23,7 @@ class ByteInputStream protected (
     ls: Seq[Listener]) extends InputStream(byteChannel, ls) {
 
   override def open(): Unit = {
-    emit(Open[ByteInputStream](this))
+    emit(new Open[ByteInputStream](this))
     readToEnd(ByteBuffer.allocate(bufferSize))
   }
   override def pipe(ws: WritableStream): Unit = {}
@@ -32,7 +32,7 @@ class ByteInputStream protected (
     byteChannel.read(buf, null, new CompletionHandler[Integer, Void] {
       override def completed(bytesRead: Integer, v: Void) {
         if (bytesRead > 0)
-          emit(Data[ByteBuffer](buf.flip().asInstanceOf[ByteBuffer]))
+          emit(new Data(buf.flip().asInstanceOf[ByteBuffer]))
 
         if (bytesRead < bufferSize)
           close()
@@ -41,7 +41,7 @@ class ByteInputStream protected (
       }
 
       override def failed(exception: Throwable, v: Void) {
-        emit(Error(exception))
+        emit(new Error(exception))
       }
     })
   }

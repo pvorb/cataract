@@ -1,6 +1,6 @@
 /*                  __                              __ 
-**   _____ ____ _ _/ /_ ____ _ _ ___ ____ _ _____ _/ /_
-**  / ___// __ `//  __// __ `// ___// __ `//  __//  __/
+**   _____ ___ __ _/ /_ ___ __ _ ___ ___ __ _____ _/ /_
+**  / ___// __` //  __// __` // ___// __` //  __//  __/
 ** / /__ / /_/ / / /_ / /_/ // /   / /_/ // /__  / /_
 ** \___/ \__,_/  \__/ \__,_//_/    \__,_/ \___/  \__/
 **
@@ -28,7 +28,7 @@ class FileInputStream protected (
     ls: Seq[Listener]) extends InputStream(AsynchronousFileChannel.open(path), ls) {
 
   override def open(): Unit = {
-    emit(Open(this))
+    emit(new Open(this))
     readToEnd(ByteBuffer.allocate(bufSize))
   }
   override def pipe(ws: WritableStream): Unit = {}
@@ -37,12 +37,12 @@ class FileInputStream protected (
     case ch: AsynchronousFileChannel => ch
   }
 
-  lazy val size = ch.size()
+  lazy val size = ch.size
 
   private def readToEnd(buf: ByteBuffer, pos: Long = 0L) {
     ch.read(buf, pos, null, new CompletionHandler[Integer, Void] {
       override def completed(bytesRead: Integer, v: Void) {
-        emit(Data(buf.flip().asInstanceOf[ByteBuffer]))
+        emit(new Data(buf.flip().asInstanceOf[ByteBuffer]))
 
         if (pos + bytesRead >= size)
           close()
@@ -51,7 +51,7 @@ class FileInputStream protected (
       }
 
       override def failed(exception: Throwable, v: Void) {
-        emit(Error(exception))
+        emit(new Error(exception))
       }
     })
   }

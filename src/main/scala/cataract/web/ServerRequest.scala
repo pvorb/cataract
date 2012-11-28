@@ -1,6 +1,6 @@
 /*                  __                              __ 
-**   _____ ____ _ _/ /_ ____ _ _ ___ ____ _ _____ _/ /_
-**  / ___// __ `//  __// __ `// ___// __ `//  __//  __/
+**   _____ ___ __ _/ /_ ___ __ _ ___ ___ __ _____ _/ /_
+**  / ___// __` //  __// __` // ___// __` //  __//  __/
 ** / /__ / /_/ / / /_ / /_/ // /   / /_/ // /__  / /_
 ** \___/ \__,_/  \__/ \__,_//_/    \__,_/ \___/  \__/
 **
@@ -32,9 +32,13 @@ class ServerRequest private (
   def uri = head._2
   def httpVersion = head._3
   def headers = head._4
+  
+  override def open() {
+    head
+  }
 
   private[this] lazy val head: (String, URI, String, Map[String, String]) = {
-    emit(Open(this))
+    emit(new Open(this))
 
     val charset = Charset.forName("ISO-8859-1")
     val head = new StringBuilder
@@ -54,7 +58,7 @@ class ServerRequest private (
           }
           case Array(h, t) => {
             head.append(h)
-            emit(Data(ByteBuffer.wrap(t.getBytes(charset))))
+            emit(new Data(ByteBuffer.wrap(t.getBytes(charset))))
 
             if (bytesRead < bufferSize)
               close()
@@ -99,7 +103,7 @@ class ServerRequest private (
       parseHead(head.result)
     } catch {
       case e => {
-        emit(Error(e))
+        emit(new Error(e))
 
         ("GET", new URI("/"), "1.1", Map())
       }

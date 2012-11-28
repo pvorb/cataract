@@ -1,6 +1,6 @@
 /*                  __                              __ 
-**   _____ ____ _ _/ /_ ____ _ _ ___ ____ _ _____ _/ /_
-**  / ___// __ `//  __// __ `// ___// __ `//  __//  __/
+**   _____ ___ __ _/ /_ ___ __ _ ___ ___ __ _____ _/ /_
+**  / ___// __` //  __// __` // ___// __` //  __//  __/
 ** / /__ / /_/ / / /_ / /_/ // /   / /_/ // /__  / /_
 ** \___/ \__,_/  \__/ \__,_//_/    \__,_/ \___/  \__/
 **
@@ -14,7 +14,10 @@ import cataract.event.{ Callback, Error, Event, EventEmitter, Listener, Open }
 import cataract.web.{ ServerRequest, ServerResponse }
 import java.net.InetSocketAddress
 import java.nio.channels.{ AsynchronousServerSocketChannel, AsynchronousSocketChannel, CompletionHandler }
+import cataract.event.emits
 
+@emits(classOf[Open[Server]])
+@emits(classOf[Error])
 class Server protected (
     addresses: Seq[InetSocketAddress],
     bufSize: Int,
@@ -23,15 +26,15 @@ class Server protected (
   for (address <- addresses) {
     val ch = AsynchronousServerSocketChannel.open()
     ch.bind(address)
-    emit(Open(address))
+    emit(new Open(address))
     ch.accept(null, new CompletionHandler[AsynchronousSocketChannel, Void] {
       override def completed(ch: AsynchronousSocketChannel, v: Void) {
-        emit(Server.Request(ServerRequest.build(ch, bufSize),
+        emit(new Server.Request(ServerRequest.build(ch, bufSize),
           new ServerResponse(ch)))
       }
 
       override def failed(exception: Throwable, v: Void) {
-        emit(Error(exception))
+        emit(new Error(exception))
       }
     })
   }

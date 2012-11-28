@@ -1,6 +1,6 @@
 /*                  __                              __ 
-**   _____ ____ _ _/ /_ ____ _ _ ___ ____ _ _____ _/ /_
-**  / ___// __ `//  __// __ `// ___// __ `//  __//  __/
+**   _____ ___ __ _/ /_ ___ __ _ ___ ___ __ _____ _/ /_
+**  / ___// __` //  __// __` // ___// __` //  __//  __/
 ** / /__ / /_/ / / /_ / /_/ // /   / /_/ // /__  / /_
 ** \___/ \__,_/  \__/ \__,_//_/    \__,_/ \___/  \__/
 **
@@ -23,6 +23,6 @@ abstract class InputStream(
 
   def readable: Boolean = channel.isOpen
   def open(): Unit
-  def close(): Unit = { emit(Close(this)); channel.close() }
+  def close(): Unit = { emit(new Close(this)); channel.close() }
   def pipe(ws: WritableStream): Unit
 }
